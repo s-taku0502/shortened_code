@@ -1,8 +1,10 @@
+# app.py
 from flask import Flask, render_template, request, redirect
 import secrets
 import string
 import json
 import os
+from data_rotation import save_data  # data_rotation.pyをインポート
 
 app = Flask(__name__)
 
@@ -22,9 +24,7 @@ def save_url_mapping(short_url, original_url):
         data = {}
 
     data[short_url] = original_url
-
-    with open(DATA_FILE, 'w', encoding='utf-8') as file:
-        json.dump(data, file, indent=4)
+    save_data(data)  # data_rotation.pyを使って保存時にローテーションを実行
 
 # ホームページ（URL入力＆短縮処理）
 @app.route('/', methods=['GET', 'POST'])
