@@ -15,11 +15,16 @@ document.addEventListener("DOMContentLoaded", () => {
             body: JSON.stringify({ url: urlInput })
         });
 
-        const data = await response.json();
-        if (data.shortened_url) {
-            shortUrlElem.textContent = data.shortened_url;
-            shortUrlElem.href = data.shortened_url;
-            resultDiv.style.display = "block";
+        if (response.ok) {
+            const data = await response.json();
+            if (data.shortened_url) {
+                shortUrlElem.textContent = data.shortened_url;
+                shortUrlElem.href = data.shortened_url;
+                resultDiv.style.display = "block";
+            }
+        } else {
+            const errorData = await response.json();
+            alert(`エラー: ${errorData.error || "不明なエラーが発生しました。"}`);
         }
     });
 

@@ -44,10 +44,23 @@ def shorten():
         return jsonify({'error': 'Invalid request'}), 400
 
     original_url = data['url']
-    short_url = generate_short_url()
-    save_url_mapping(short_url, original_url)
     
+    # 既存の短縮URLがあればそれを使用
+    short_url = None
+    if os.path.exists(DATA_FILE):
+        with open(DATA_FILE, 'r', encoding='utf-8') as file:
+            existing_data = json.load(file)
+            for key, value in existing_data.items():
+                if value == original_url:
+                    short_url = key
+                    break
+    
+    if short_url is None:
+        short_url = generate_short_url()
+        save_url_mapping(short_url, original_url)
+
     return jsonify({'shortened_url': short_url}), 201
+
 
 # 短縮URLアクセス時にリダイレクト
 @app.route('/<short_url>')
