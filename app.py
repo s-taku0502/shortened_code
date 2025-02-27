@@ -1,5 +1,4 @@
-# app.py
-from flask import Flask, render_template, request, redirect
+from flask import Flask, render_template, request, redirect, jsonify
 import secrets
 import string
 import json
@@ -36,6 +35,19 @@ def home():
         return render_template('index.html', short_url=short_url)
 
     return render_template('index.html', short_url=None)
+
+# **📌 新規エンドポイント: API用 `/shorten`**
+@app.route('/shorten', methods=['POST'])
+def shorten():
+    data = request.get_json()
+    if not data or 'url' not in data:
+        return jsonify({'error': 'Invalid request'}), 400
+
+    original_url = data['url']
+    short_url = generate_short_url()
+    save_url_mapping(short_url, original_url)
+    
+    return jsonify({'shortened_url': f"{request.host_url}{short_url}"}), 201
 
 # 短縮URLアクセス時にリダイレクト
 @app.route('/<short_url>')

@@ -4,32 +4,23 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>trim6 | URL短縮サービス</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <title>URL短縮ツール</title>
+    <script defer src="{{ url_for('static', filename='script.js') }}"></script>
 </head>
-
-<!-- Google tag (gtag.js) -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-DCHE494EH4"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
-
-  gtag('config', 'G-DCHE494EH4');
-</script>
 
 <body>
     <h1>超短縮URLジェネレーターサイト「trim6」へようこそ</h1>
     <p>下のフォームに変換前のURLを貼ってください。「短縮」を押すと、下に6文字に短縮されたURLが出てきます。</p>
-    <form method="POST">
-        <label for="original_url">元のURL:</label>
-        <input type="url" id="original_url" name="original_url" required>
+    <form id="shorten-form">
+        <input type="url" id="original-url" placeholder="URLを入力" required>
         <button type="submit">短縮</button>
     </form>
 
-    {% if short_url %}
-    <p>短縮URL: <a href="/{{ short_url }}" target="_blank">/{{ short_url }}</a></p>
-    {% endif %}
+    <div id="result" style="display: none;">
+        <p>短縮URL: <a id="short-url" href="#" target="_blank"></a></p>
+        <button id="copy-btn">コピー</button>
+        <button id="share-btn">共有</button>
+    </div>
 </body>
 
 </html>
