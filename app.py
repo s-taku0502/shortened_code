@@ -47,7 +47,7 @@ def shorten():
     short_url = generate_short_url()
     save_url_mapping(short_url, original_url)
     
-    return jsonify({'shortened_url': f"{request.host_url}{short_url}"}), 201
+    return jsonify({'shortened_url': short_url}), 201
 
 # 短縮URLアクセス時にリダイレクト
 @app.route('/<short_url>')
